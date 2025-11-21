@@ -180,10 +180,9 @@ public class Lista {
                 expresion.append(aux.getDato().toString()).append("\n");
                 aux = aux.getPnext();
             }
-            JOptionPane.showMessageDialog(null, expresion.toString());
             System.out.println(expresion);
         } else {
-            JOptionPane.showMessageDialog(null, "La lista está vacía");
+            System.out.println("La lista está vacía");
         }
     }
 
