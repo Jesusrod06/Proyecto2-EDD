@@ -46,105 +46,157 @@ public class Cargar {
 
             String[] lineas = txt.split("\\r?\\n");
             if (lineas.length < 5) {
-                JOptionPane.showMessageDialog(null, 
-                    "Error: Formato de resumen inválido. Muy pocas líneas.");
+                JOptionPane.showMessageDialog(null,
+                        "Error: Formato de resumen inválido. Muy pocas líneas.");
                 return;
             }
 
             int indice = 0;
-            
-            // TÍTULO
+
+            //Saltar líneas vacías iniciales
+            while (indice < lineas.length && lineas[indice].trim().isEmpty()) {
+                indice++;
+            }
+
+            if (indice >= lineas.length) {
+                JOptionPane.showMessageDialog(null,
+                        "Error: no se encontró el título del trabajo.");
+                return;
+            }
+
+            //TÍTULO = primera línea NO vacía
             String titulo = lineas[indice].trim();
             indice++;
 
-            //LECTURA DE AUTORES
-            if (!lineas[indice].trim().equalsIgnoreCase("Autores")) {
-                JOptionPane.showMessageDialog(null, 
-                    "Error: No se encontró la sección 'Autores'.");
+            //Buscar la línea "Autores", saltando vacíos
+            while (indice < lineas.length && lineas[indice].trim().isEmpty()) {
+                indice++;
+            }
+
+            if (indice >= lineas.length
+                    || !lineas[indice].trim().equalsIgnoreCase("Autores")) {
+                JOptionPane.showMessageDialog(null,
+                        "Error: No se encontró la sección 'Autores'.");
                 return;
             }
-            indice++;
 
-            // leer autores hasta la palabra "Resumen"
-            java.util.List<String> autoresTemp = new java.util.ArrayList<>();
+            indice++; // saltar la palabra "Autores"
 
-            while (indice < lineas.length &&
-                   !lineas[indice].trim().equalsIgnoreCase("Resumen")) {
+            // LECTURA DE AUTORES hasta encontrar "Resumen"
+            // ignorando líneas vacías
+            int inicioAutores = indice;
+            int contadorAutores = 0;
+            int j = indice;
 
-                String lineaAutor = lineas[indice].trim();
-                if (!lineaAutor.isEmpty()) {
-                    autoresTemp.add(lineaAutor);
+            // PRIMER PASO: contar cuántos autores hay
+            while (j < lineas.length
+                    && !lineas[j].trim().equalsIgnoreCase("Resumen")) {
+
+                String linea = lineas[j].trim();
+                if (!linea.isEmpty()) {
+                    contadorAutores++;
+                }
+                j++;
+            }
+
+            if (j >= lineas.length) {
+                JOptionPane.showMessageDialog(null,
+                        "Error: No se encontró la sección 'Resumen'.");
+                return;
+            }
+
+            // SEGUNDO PASO: crear el arreglo de autores y llenarlo
+            String[] autores = new String[contadorAutores];
+            int k = 0;
+            j = inicioAutores;
+
+            while (j < lineas.length
+                    && !lineas[j].trim().equalsIgnoreCase("Resumen")) {
+
+                String linea = lineas[j].trim();
+                if (!linea.isEmpty()) {
+                    autores[k] = linea;
+                    k++;
+                }
+                j++;
+            }
+
+            // j está en la línea "Resumen"
+            indice = j + 1; // saltar la palabra "Resumen"
+
+            
+            // LECTURA DEL CUERPO DEL RESUMEN
+            // Saltar líneas vacías justo después de "Resumen"
+            while (indice < lineas.length && lineas[indice].trim().isEmpty()) {
+                indice++;
+            }
+
+            StringBuilder cuerpoSB = new StringBuilder();
+
+            // Leer hasta encontrar una línea que empiece con "Palabras claves"
+            while (indice < lineas.length
+                    && !lineas[indice].trim().toLowerCase().startsWith("palabras claves")) {
+
+                String linea = lineas[indice].trim();
+                if (!linea.isEmpty()) {
+                    cuerpoSB.append(linea).append(" ");
                 }
                 indice++;
             }
 
             if (indice >= lineas.length) {
                 JOptionPane.showMessageDialog(null,
-                    "Error: No se encontró la sección 'Resumen'.");
+                        "Error: No se encontró la sección 'Palabras claves'.");
                 return;
-            }
-
-            // saltar la palabra "Resumen"
-            indice++;
-
-            // LECTURA DEL CUERPO DEL RESUMEN
-            StringBuilder cuerpoSB = new StringBuilder();
-
-            // Leer hasta encontrar "Palabras claves:"
-            while (indice < lineas.length &&
-                   !lineas[indice].toLowerCase().startsWith("palabras claves")) {
-
-                cuerpoSB.append(lineas[indice]).append(" ");
-                indice++;
             }
 
             String cuerpo = cuerpoSB.toString().trim();
 
-            if (indice >= lineas.length) {
-                JOptionPane.showMessageDialog(null, 
-                    "Error: No se encontró la sección 'Palabras claves'.");
-                return;
-            }
-
             // LECTURA DE PALABRAS CLAVES
+            // En la forma: "Palabras claves: a, b, c"
+
             String lineaPC = lineas[indice].trim();
             if (!lineaPC.toLowerCase().startsWith("palabras claves")) {
-                JOptionPane.showMessageDialog(null, 
-                    "Error: línea de palabras clave no válida.");
+                JOptionPane.showMessageDialog(null,
+                        "Error: línea de palabras clave no válida.");
                 return;
             }
 
-            String listaPC = lineaPC.substring(lineaPC.indexOf(":") + 1).trim();
-
-            String[] palabrasClave = listaPC.split(",");
-
-            for (int i = 0; i < palabrasClave.length; i++) {
-                palabrasClave[i] = palabrasClave[i].trim();
+            int posDosPuntos = lineaPC.indexOf(':');
+            if (posDosPuntos == -1 || posDosPuntos == lineaPC.length() - 1) {
+                JOptionPane.showMessageDialog(null,
+                        "Error: Formato de 'Palabras claves' inválido (falta ':').");
+                return;
             }
 
-            // convertir a arreglo los autores
-            String[] autores = autoresTemp.toArray(
-                    new String[autoresTemp.size()]
-            );
+            String listaPC = lineaPC.substring(posDosPuntos + 1).trim();
+            String[] palabrasClaveTemp = listaPC.split(",");
 
-            //CREACIÓN DEL OBJETO RESUMEN
+            // Limpiar espacios en cada palabra clave
+            for (int i2 = 0; i2 < palabrasClaveTemp.length; i2++) {
+                palabrasClaveTemp[i2] = palabrasClaveTemp[i2].trim();
+            }
+
+            String[] palabrasClave = palabrasClaveTemp;
+
+            // CREAR EL OBJETO RESUMEN E INSERTAR EN HASH
             Resumen resumen = new Resumen(titulo, autores, cuerpo, palabrasClave);
 
-            //INSERTAR EN LA HASH TABLE
             boolean insertado = tabla.insertar(resumen);
 
             if (!insertado) {
-                JOptionPane.showMessageDialog(null, 
-                    "Error: este resumen ya existe en el sistema.");
+                JOptionPane.showMessageDialog(null,
+                        "Error: este resumen ya existe en el sistema (título repetido).");
                 return;
             }
 
             JOptionPane.showMessageDialog(null,
-                "Resumen cargado correctamente:\n\n" + titulo);
+                    "Resumen cargado correctamente:\n\n" + titulo);
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,
-                "Error inesperado al cargar el resumen: " + e.getMessage());
+                    "Error inesperado al cargar el resumen: " + e.getMessage());
         }
     }
+
 }
