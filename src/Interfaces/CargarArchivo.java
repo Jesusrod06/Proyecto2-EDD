@@ -148,7 +148,7 @@ public class CargarArchivo extends javax.swing.JFrame {
     }//GEN-LAST:event_limpiarActionPerformed
 
     private void atrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atrasActionPerformed
-        Bienvenido v1 = new Bienvenido();
+        Menu menu = new Menu();
         this.dispose();
     }//GEN-LAST:event_atrasActionPerformed
 
