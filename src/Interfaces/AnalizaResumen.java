@@ -4,16 +4,30 @@
  */
 package Interfaces;
 
+import static Interfaces.Bienvenido.sistemaInv;
+import MainClass.Resumen;
+import javax.swing.DefaultComboBoxModel;
+
 public class AnalizaResumen extends javax.swing.JFrame {
 
-    /**
-     * Creates new form AnalizaResumen
-     */
+    DefaultComboBoxModel modeloCombo = new DefaultComboBoxModel();
+
     public AnalizaResumen() {
         initComponents();
         this.setVisible(true);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
+        this.actualizarComboBox();
+    }
+
+    private void actualizarComboBox() {
+        modeloCombo.removeAllElements();
+        String[] titulos = sistemaInv.listarTitulos();
+        
+        for (int i = 0; i < titulos.length; i++) {
+            modeloCombo.addElement(titulos[i]);
+        }
+
     }
 
     /**
@@ -27,6 +41,12 @@ public class AnalizaResumen extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        investigaciones = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        resultado = new javax.swing.JTextArea();
+        analizar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -37,10 +57,49 @@ public class AnalizaResumen extends javax.swing.JFrame {
         jLabel1.setText("Analizar Resumen");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 20, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
+        jLabel2.setText("Seleccione la investigacion que desea analizar:");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, -1, -1));
+
+        investigaciones.setModel(modeloCombo);
+        jPanel1.add(investigaciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 340, -1));
+
+        jButton1.setText("<-");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        resultado.setColumns(20);
+        resultado.setRows(5);
+        jScrollPane1.setViewportView(resultado);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 340, 250));
+
+        analizar.setText("Analizar");
+        analizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                analizarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(analizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 340, -1));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 460));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Menu menu = new Menu();
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void analizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analizarActionPerformed
+        String tituloSeleccionado = (String) investigaciones.getSelectedItem();
+        String analisisE = sistemaInv.analizarResumenPorTitulo(tituloSeleccionado);
+        resultado.setText(analisisE);
+    }//GEN-LAST:event_analizarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,7 +137,13 @@ public class AnalizaResumen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton analizar;
+    private javax.swing.JComboBox<String> investigaciones;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea resultado;
     // End of variables declaration//GEN-END:variables
 }
