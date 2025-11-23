@@ -5,9 +5,12 @@
 package EDD;
 
 /**
- * Árbol AVL que almacena cadenas de texto (autores o palabras clave)
- * ordenadas lexicográficamente (ignorando mayúsculas/minúsculas).
+ * Árbol AVL que almacena cadenas de texto (autores o palabras clave) ordenadas
+ * lexicográficamente (ignorando mayúsculas/minúsculas).
  *
+ * Cada nodo (NodoA) contiene:
+ *  - la clave (autor/palabra clave)
+ *  - una Lista de títulos de resúmenes asociados a esa clave
  */
 public class ArbolAVL {
 
@@ -26,27 +29,36 @@ public class ArbolAVL {
     }
 
     /**
-     * Inserta una clave en el árbol.Si la clave ya existe, NO inserta un nodo nuevo.
-     * @param clave
+     * Inserta una clave en el árbol y asocia un título de resumen a esa clave.
+     * Si la clave ya existe, NO se crea un nodo nuevo, solo se agrega el título
+     * a la lista de títulos del nodo correspondiente.
+     *
+     * @param clave          Autor o palabra clave.
+     * @param tituloResumen  Título del resumen asociado.
      */
-    public void insertar(String clave) {
-        raiz = insertarRec(raiz, clave);
+    public void insertar(String clave, String tituloResumen) {
+        raiz = insertarRec(raiz, clave, tituloResumen);
     }
 
-    private NodoA insertarRec(NodoA nodo, String clave) {
-        // Inserción como en un BST normal
+    /**
+     * Inserción recursiva típica de BST + actualización de altura + balanceo.
+     */
+    private NodoA insertarRec(NodoA nodo, String clave, String tituloResumen) {
         if (nodo == null) {
-            return new NodoA(clave);
+            NodoA nuevo = new NodoA(clave);
+            nuevo.agregarTitulo(tituloResumen);
+            return nuevo;
         }
 
         int cmp = clave.compareToIgnoreCase(nodo.getClave());
 
         if (cmp < 0) {
-            nodo.setIzquierdo(insertarRec(nodo.getIzquierdo(), clave));
+            nodo.setIzquierdo(insertarRec(nodo.getIzquierdo(), clave, tituloResumen));
         } else if (cmp > 0) {
-            nodo.setDerecho(insertarRec(nodo.getDerecho(), clave));
+            nodo.setDerecho(insertarRec(nodo.getDerecho(), clave, tituloResumen));
         } else {
-            // clave repetida -> no insertamos nada
+            // clave repetida -> no insertamos nodo nuevo, sólo agregamos el título
+            nodo.agregarTitulo(tituloResumen);
             return nodo;
         }
 
@@ -58,7 +70,8 @@ public class ArbolAVL {
     }
 
     /**
-     * Busca una clave en el árbol.
+     * Verifica si una clave existe en el árbol.
+     *
      * @param clave
      * @return true si la clave existe, false en caso contrario.
      */
@@ -68,8 +81,9 @@ public class ArbolAVL {
 
     /**
      * Devuelve el nodo donde está la clave o null si no existe.
+     *
      * @param clave
-     * @return 
+     * @return NodoA con esa clave o null.
      */
     public NodoA buscar(String clave) {
         return buscarRec(raiz, clave);
@@ -94,7 +108,8 @@ public class ArbolAVL {
     /**
      * Devuelve una Lista (tu lista enlazada) con todas las claves
      * en orden alfabético.
-     * @return 
+     *
+     * @return Lista con las claves ordenadas.
      */
     public Lista obtenerClavesEnOrden() {
         Lista resultado = new Lista();

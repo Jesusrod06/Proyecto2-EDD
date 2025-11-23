@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 
 public class CargarArchivo extends javax.swing.JFrame {
     
-    private Cargar cargarH = new Cargar(sistemaInv.getTablaResumenes());
+    private Cargar cargarH = new Cargar(sistemaInv);
     public CargarArchivo() {
         initComponents();
         this.setVisible(true);
@@ -157,6 +157,8 @@ public class CargarArchivo extends javax.swing.JFrame {
             cargarH.setTxt(archivo.getText());
             cargarH.cargarResumen();
             sistemaInv.getTablaResumenes().mostrarTabla();
+            System.out.println("\n\n\n");
+            sistemaInv.getArbolAutores().mostrarInOrden();
 
         } else {
             JOptionPane.showMessageDialog(null, "Debes buscar una archivo para poder cargarlo.");

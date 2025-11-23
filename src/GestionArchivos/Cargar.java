@@ -6,15 +6,16 @@ package GestionArchivos;
 
 import EDD.HashTable;
 import MainClass.Resumen;
+import MainClass.SistemaInvestigaciones;
 import javax.swing.JOptionPane;
 
 public class Cargar {
 
-    private HashTable tabla;
+    private SistemaInvestigaciones sistema;
     private String txt;
 
-    public Cargar(HashTable tabla) {
-        this.tabla = tabla;
+    public Cargar(SistemaInvestigaciones sistema) {
+        this.sistema = sistema;
         this.txt = null;
     }
 
@@ -26,16 +27,18 @@ public class Cargar {
         this.txt = txt;
     }
 
-    public HashTable getTabla() {
-        return tabla;
+    public SistemaInvestigaciones getSistema() {
+        return sistema;
     }
 
-    public void setTabla(HashTable tabla) {
-        this.tabla = tabla;
+    public void setSistema(SistemaInvestigaciones sistema) {
+        this.sistema = sistema;
     }
 
     /**
      * Método principal para cargar un resumen desde el String txt.
+     * Usa SistemaInvestigaciones para insertar en la HashTable
+     * y actualizar los árboles AVL (autores y palabras clave).
      */
     public void cargarResumen() {
         try {
@@ -53,7 +56,7 @@ public class Cargar {
 
             int indice = 0;
 
-            //Saltar líneas vacías iniciales
+            // Saltar líneas vacías iniciales
             while (indice < lineas.length && lineas[indice].trim().isEmpty()) {
                 indice++;
             }
@@ -64,11 +67,11 @@ public class Cargar {
                 return;
             }
 
-            //TÍTULO = primera línea NO vacía
+            // TÍTULO = primera línea NO vacía
             String titulo = lineas[indice].trim();
             indice++;
 
-            //Buscar la línea "Autores", saltando vacíos
+            // Buscar la línea "Autores", saltando vacíos
             while (indice < lineas.length && lineas[indice].trim().isEmpty()) {
                 indice++;
             }
@@ -124,7 +127,6 @@ public class Cargar {
             // j está en la línea "Resumen"
             indice = j + 1; // saltar la palabra "Resumen"
 
-            
             // LECTURA DEL CUERPO DEL RESUMEN
             // Saltar líneas vacías justo después de "Resumen"
             while (indice < lineas.length && lineas[indice].trim().isEmpty()) {
@@ -154,7 +156,6 @@ public class Cargar {
 
             // LECTURA DE PALABRAS CLAVES
             // En la forma: "Palabras claves: a, b, c"
-
             String lineaPC = lineas[indice].trim();
             if (!lineaPC.toLowerCase().startsWith("palabras claves")) {
                 JOptionPane.showMessageDialog(null,
@@ -179,10 +180,14 @@ public class Cargar {
 
             String[] palabrasClave = palabrasClaveTemp;
 
-            // CREAR EL OBJETO RESUMEN E INSERTAR EN HASH
+            // CREAR EL OBJETO RESUMEN
             Resumen resumen = new Resumen(titulo, autores, cuerpo, palabrasClave);
 
-            boolean insertado = tabla.insertar(resumen);
+            // Insertar en el sistema:
+            // - HashTable interna
+            // - Árbol AVL de autores
+            // - Árbol AVL de palabras clave
+            boolean insertado = sistema.agregarResumen(resumen);
 
             if (!insertado) {
                 JOptionPane.showMessageDialog(null,

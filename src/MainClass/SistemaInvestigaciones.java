@@ -4,17 +4,25 @@
  */
 package MainClass;
 
+import EDD.ArbolAVL;
 import EDD.HashTable;
 import EDD.Lista;
 import EDD.Nodo;
+import EDD.NodoA;
 
 public class SistemaInvestigaciones {
 
-    // Estructura principal
+    // Estructura principal (búsqueda O(1) promedio por título)
     private HashTable tablaResumenes;
+
+    // Índices balanceados
+    private ArbolAVL arbolAutores;        // clave = autor, valores = títulos
+    private ArbolAVL arbolPalabrasClave;  // clave = palabra clave, valores = títulos
 
     public SistemaInvestigaciones(int capacidadHash) {
         this.tablaResumenes = new HashTable(capacidadHash);
+        this.arbolAutores = new ArbolAVL();
+        this.arbolPalabrasClave = new ArbolAVL();
     }
 
     public HashTable getTablaResumenes() {
@@ -25,15 +33,73 @@ public class SistemaInvestigaciones {
         this.tablaResumenes = tablaResumenes;
     }
 
+    public ArbolAVL getArbolAutores() {
+        return arbolAutores;
+    }
+
+    public void setArbolAutores(ArbolAVL arbolAutores) {
+        this.arbolAutores = arbolAutores;
+    }
+
+    public ArbolAVL getArbolPalabrasClave() {
+        return arbolPalabrasClave;
+    }
+
+    public void setArbolPalabrasClave(ArbolAVL arbolPalabrasClave) {
+        this.arbolPalabrasClave = arbolPalabrasClave;
+    }
+
     /**
      * Agrega un resumen al sistema usando la HashTable.Retorna true si se
-     * insertó, false si el título ya existía.
+     * insertó, false si el título ya existía.Además, si se inserta
+     * correctamente, actualiza los AVL de autores y de palabras clave.
      *
      * @param r
      * @return
      */
     public boolean agregarResumen(Resumen r) {
-        return tablaResumenes.insertar(r);
+        boolean insertado = tablaResumenes.insertar(r);
+
+        if (insertado) {
+            cargarEnAVL(r);
+        }
+
+        return insertado;
+    }
+
+    /**
+     * Carga autores y palabras clave del resumen en los árboles AVL. Ahora el
+     * árbol almacena: - clave (autor/palabra) - lista de títulos asociados a
+     * esa clave
+     */
+    private void cargarEnAVL(Resumen r) {
+        String titulo = r.getTitulo();
+
+        // Cargar AUTOR(ES) -> arbolAutores.insertar(autor, tituloResumen)
+        String[] autores = r.getAutores();
+        if (autores != null) {
+            for (int i = 0; i < autores.length; i++) {
+                if (autores[i] != null) {
+                    String autor = autores[i].trim();
+                    if (!autor.isEmpty()) {
+                        arbolAutores.insertar(autor, titulo);
+                    }
+                }
+            }
+        }
+
+        // Cargar PALABRAS CLAVE -> arbolPalabrasClave.insertar(pc, tituloResumen)
+        String[] pcs = r.getPalabrasClave();
+        if (pcs != null) {
+            for (int i = 0; i < pcs.length; i++) {
+                if (pcs[i] != null) {
+                    String pc = pcs[i].trim();
+                    if (!pc.isEmpty()) {
+                        arbolPalabrasClave.insertar(pc, titulo);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -114,8 +180,7 @@ public class SistemaInvestigaciones {
     }
 
     /**
-     * Retorna una representación de texto simple de todos los resúmenes.(Útil
-     * para debug o para pasar a una interfaz).
+     * Retorna una representación de texto simple de todos los resúmenes.
      *
      * @return
      */
@@ -194,8 +259,9 @@ public class SistemaInvestigaciones {
     /**
      * Analiza un Resumen concreto y devuelve el texto con: - Nombre del trabajo
      * - Autores - Cada palabra clave con su frecuencia en el cuerpo
+     *
      * @param r
-     * @return 
+     * @return
      */
     public String analizarResumen(Resumen r) {
         if (r == null) {
@@ -255,8 +321,9 @@ public class SistemaInvestigaciones {
     /**
      * Analiza un resumen a partir del título (usa la HashTable en O(1)
      * promedio).
+     *
      * @param titulo
-     * @return 
+     * @return
      */
     public String analizarResumenPorTitulo(String titulo) {
         Resumen r = buscarResumenPorTitulo(titulo);
@@ -266,5 +333,61 @@ public class SistemaInvestigaciones {
         }
 
         return analizarResumen(r);
+    }
+
+    /**
+     * Devuelve autores ordenados alfabéticamente (claves del AVL de autores).
+     */
+    public Lista listarAutoresOrdenados() {
+        return arbolAutores.obtenerClavesEnOrden();
+    }
+
+    /**
+     * Devuelve palabras clave ordenadas alfabéticamente (claves del AVL de
+     * palabras clave).
+     *
+     * @return
+     */
+    public Lista listarPalabrasClaveOrdenadas() {
+        return arbolPalabrasClave.obtenerClavesEnOrden();
+    }
+
+    /**
+     * ?Buscar investigaciones por palabra clave: Dada una palabra clave, usa el
+     * AVL para encontrar el nodo y retorna la lista de títulos asociados.
+     *
+     * @param palabraClave
+     * @return
+     */
+    public Lista buscarInvestigacionesPorPalabraClave(String palabraClave) {
+        NodoA nodo = arbolPalabrasClave.buscar(palabraClave);
+        if (nodo == null) {
+            return new Lista(); // lista vacía
+        }
+        return nodo.getListaTitulos();
+    }
+
+    /**
+     * Versión cómoda para GUI: devuelve un arreglo de títulos a partir de una
+     * palabra clave.
+     *
+     * @param palabraClave
+     * @return
+     */
+    public String[] buscarInvestigacionesPorPalabraClaveArray(String palabraClave) {
+        Lista listaTitulos = buscarInvestigacionesPorPalabraClave(palabraClave);
+
+        int n = listaTitulos.getSize();
+        String[] res = new String[n];
+
+        Nodo aux = listaTitulos.getpFirst();
+        int i = 0;
+        while (aux != null) {
+            res[i] = (String) aux.getDato();
+            i++;
+            aux = aux.getPnext();
+        }
+
+        return res;
     }
 }
