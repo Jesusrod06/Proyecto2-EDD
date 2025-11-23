@@ -8,9 +8,8 @@ package EDD;
  * Árbol AVL que almacena cadenas de texto (autores o palabras clave) ordenadas
  * lexicográficamente (ignorando mayúsculas/minúsculas).
  *
- * Cada nodo (NodoA) contiene:
- *  - la clave (autor/palabra clave)
- *  - una Lista de títulos de resúmenes asociados a esa clave
+ * Cada nodo (NodoA) contiene: - la clave (autor/palabra clave) - una Lista de
+ * títulos de resúmenes asociados a esa clave
  */
 public class ArbolAVL {
 
@@ -33,8 +32,8 @@ public class ArbolAVL {
      * Si la clave ya existe, NO se crea un nodo nuevo, solo se agrega el título
      * a la lista de títulos del nodo correspondiente.
      *
-     * @param clave          Autor o palabra clave.
-     * @param tituloResumen  Título del resumen asociado.
+     * @param clave Autor o palabra clave.
+     * @param tituloResumen Título del resumen asociado.
      */
     public void insertar(String clave, String tituloResumen) {
         raiz = insertarRec(raiz, clave, tituloResumen);
@@ -106,8 +105,8 @@ public class ArbolAVL {
     }
 
     /**
-     * Devuelve una Lista (tu lista enlazada) con todas las claves
-     * en orden alfabético.
+     * Devuelve una Lista (tu lista enlazada) con todas las claves en orden
+     * alfabético.
      *
      * @return Lista con las claves ordenadas.
      */
@@ -135,7 +134,6 @@ public class ArbolAVL {
     }
 
     /* ==================  LÓGICA AVL (ALTURA, BALANCEO, ROTACIONES)  ================== */
-
     private int altura(NodoA nodo) {
         return (nodo == null) ? 0 : nodo.getAltura();
     }
@@ -213,4 +211,25 @@ public class ArbolAVL {
         // Nueva raíz del subárbol
         return y;
     }
+
+    public Lista buscarClavesPorCoincidencia(String fragmento) {
+        Lista resultado = new Lista();
+        buscarCoincidenciasRec(raiz, fragmento.toLowerCase(), resultado);
+        return resultado;
+    }
+
+    private void buscarCoincidenciasRec(NodoA nodo, String fragmento, Lista lista) {
+        if (nodo == null) {
+            return;
+        }
+
+        buscarCoincidenciasRec(nodo.getIzquierdo(), fragmento, lista);
+
+        if (nodo.getClave().toLowerCase().contains(fragmento)) {
+            lista.insertarFinal(nodo.getClave());
+        }
+
+        buscarCoincidenciasRec(nodo.getDerecho(), fragmento, lista);
+    }
+
 }

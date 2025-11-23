@@ -105,6 +105,8 @@ public class CargarArchivo extends javax.swing.JFrame {
 
     private void buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarActionPerformed
         FileChooser chooser = new FileChooser(this);
+        ruta.setText("");
+        archivo.setText("");
         try {
             chooser.fileChooser();
         } catch (IOException ex) {

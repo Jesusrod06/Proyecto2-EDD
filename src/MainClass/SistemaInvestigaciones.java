@@ -390,4 +390,94 @@ public class SistemaInvestigaciones {
 
         return res;
     }
+
+    public Lista buscarInvestigacionesPorCoincidencia(String fragmento) {
+
+        Lista claves = arbolPalabrasClave.buscarClavesPorCoincidencia(fragmento);
+        Lista titulosFinal = new Lista();
+
+        Nodo auxClave = claves.getpFirst();
+
+        while (auxClave != null) {
+            String clave = (String) auxClave.getDato();
+
+            NodoA nodoAVL = arbolPalabrasClave.buscar(clave);
+            if (nodoAVL != null) {
+                Lista listaTit = nodoAVL.getListaTitulos();
+                Nodo aux = listaTit.getpFirst();
+
+                while (aux != null) {
+                    String titulo = (String) aux.getDato();
+
+                    // SOLO agregar si NO está ya en titulosFinal
+                    if (!listaContiene(titulosFinal, titulo)) {
+                        titulosFinal.insertarFinal(titulo);
+                    }
+
+                    aux = aux.getPnext();
+                }
+            }
+
+            auxClave = auxClave.getPnext();
+        }
+
+        return titulosFinal;
+    }
+
+    /**
+     * Buscar investigaciones por coincidencia en AUTOR.Ejemplo: si hay autores
+     * "Mendoza", "Meneses", "Camacho Men", y busco "men", deben salir todos los
+     * títulos asociados a esos autores, sin duplicados.
+     *
+     * @param fragmento
+     * @return
+     */
+    public Lista buscarInvestigacionesPorAutorCoincidencia(String fragmento) {
+
+        // 1) Buscar las claves (autores) que contengan el fragmento
+        Lista autoresCoincidentes = arbolAutores.buscarClavesPorCoincidencia(fragmento);
+        Lista titulosFinal = new Lista();
+
+        // 2) Recorrer cada autor coincidente
+        Nodo auxAutor = autoresCoincidentes.getpFirst();
+
+        while (auxAutor != null) {
+            String autorClave = (String) auxAutor.getDato();
+
+            // Buscar el nodo del AVL correspondiente a ese autor
+            NodoA nodoAVL = arbolAutores.buscar(autorClave);
+            if (nodoAVL != null) {
+                // Obtener lista de títulos asociados a ese autor
+                Lista listaTit = nodoAVL.getListaTitulos();
+                Nodo aux = listaTit.getpFirst();
+
+                while (aux != null) {
+                    String titulo = (String) aux.getDato();
+
+                    // SOLO agregar si NO está ya en titulosFinal (evitar duplicados)
+                    if (!listaContiene(titulosFinal, titulo)) {
+                        titulosFinal.insertarFinal(titulo);
+                    }
+
+                    aux = aux.getPnext();
+                }
+            }
+
+            auxAutor = auxAutor.getPnext();
+        }
+
+        return titulosFinal;
+    }
+
+    private boolean listaContiene(Lista lista, String titulo) {
+        Nodo aux = lista.getpFirst();
+        while (aux != null) {
+            if (((String) aux.getDato()).equalsIgnoreCase(titulo)) {
+                return true;
+            }
+            aux = aux.getPnext();
+        }
+        return false;
+    }
+
 }

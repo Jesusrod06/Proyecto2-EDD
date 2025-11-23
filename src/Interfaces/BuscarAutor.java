@@ -10,11 +10,11 @@ import MainClass.Resumen;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
-public class BuscarPalabraClave extends javax.swing.JFrame {
+public class BuscarAutor extends javax.swing.JFrame {
 
     DefaultComboBoxModel modeloCombo = new DefaultComboBoxModel();
 
-    public BuscarPalabraClave() {
+    public BuscarAutor() {
         initComponents();
         this.setVisible(true);
         this.setResizable(false);
@@ -44,7 +44,7 @@ public class BuscarPalabraClave extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        palabraClaveB = new javax.swing.JTextField();
+        autorB = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         titulosR = new javax.swing.JComboBox<>();
@@ -58,8 +58,8 @@ public class BuscarPalabraClave extends javax.swing.JFrame {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
-        jLabel1.setText("Buscar por Palabra Clave");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 20, -1, -1));
+        jLabel1.setText("Buscar por Autor");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 20, -1, -1));
 
         jButton1.setText("<-");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -69,9 +69,9 @@ public class BuscarPalabraClave extends javax.swing.JFrame {
         });
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        jLabel2.setText("Ingrese la palabra clave:");
+        jLabel2.setText("Ingrese el nimbre del autor:");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 60, -1, 20));
-        jPanel1.add(palabraClaveB, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, 260, -1));
+        jPanel1.add(autorB, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, 260, -1));
 
         jButton2.setText("buscar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -112,12 +112,13 @@ public class BuscarPalabraClave extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        String palabraClave = palabraClaveB.getText();
+        String autor = autorB.getText();
         detalleR.setText("");
-        if (!palabraClave.isBlank() && !palabraClave.isEmpty()) {
-            Lista titulos = sistemaInv.buscarInvestigacionesPorCoincidencia(palabraClave);
+        if (!autor.isBlank() && !autor.isEmpty()) {
+            Lista titulos = sistemaInv.buscarInvestigacionesPorAutorCoincidencia(autor);
             if (titulos.getSize() > 0) {
                 this.actualizarComboBox(titulos);
+                
             } else {
                 JOptionPane.showMessageDialog(null, "No se encontraron titulos asociados con esa palabra clave.");
             }
@@ -153,26 +154,29 @@ public class BuscarPalabraClave extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BuscarPalabraClave.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BuscarAutor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BuscarPalabraClave.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BuscarAutor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BuscarPalabraClave.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BuscarAutor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BuscarPalabraClave.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BuscarAutor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BuscarPalabraClave().setVisible(true);
+                new BuscarAutor().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField autorB;
     private javax.swing.JTextArea detalleR;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -182,7 +186,6 @@ public class BuscarPalabraClave extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField palabraClaveB;
     private javax.swing.JComboBox<String> titulosR;
     // End of variables declaration//GEN-END:variables
 }

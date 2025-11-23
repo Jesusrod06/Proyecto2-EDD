@@ -28,9 +28,10 @@ public class Menu extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        cargarR = new javax.swing.JButton();
+        analizarR = new javax.swing.JButton();
+        buscarR = new javax.swing.JButton();
+        buscarRa = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -41,49 +42,62 @@ public class Menu extends javax.swing.JFrame {
         jLabel1.setText("Menu");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 10, -1, -1));
 
-        jButton1.setText("Cargar Resumen");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        cargarR.setText("Cargar Resumen");
+        cargarR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                cargarRActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 160, -1));
+        jPanel1.add(cargarR, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 160, -1));
 
-        jButton2.setText("Buscar Palabra Clave");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        analizarR.setText("Analizar Resumen");
+        analizarR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                analizarRActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 160, -1));
+        jPanel1.add(analizarR, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 70, 160, -1));
 
-        jButton3.setText("Analizar resumen");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        buscarR.setText("Buscar Palabra Clave");
+        buscarR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                buscarRActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 70, 160, -1));
+        jPanel1.add(buscarR, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 160, -1));
+
+        buscarRa.setText("Buscar por Autor");
+        buscarRa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscarRaActionPerformed(evt);
+            }
+        });
+        jPanel1.add(buscarRa, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 130, 160, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void cargarRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarRActionPerformed
         CargarArchivo cargarA = new CargarArchivo();
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_cargarRActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void analizarRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analizarRActionPerformed
         AnalizaResumen analizar = new AnalizaResumen();
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_analizarRActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void buscarRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarRActionPerformed
         BuscarPalabraClave buscarA = new BuscarPalabraClave();
         this.dispose();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_buscarRActionPerformed
+
+    private void buscarRaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarRaActionPerformed
+        BuscarAutor buscarAutor = new BuscarAutor();
+        this.dispose();
+    }//GEN-LAST:event_buscarRaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -121,9 +135,10 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton analizarR;
+    private javax.swing.JButton buscarR;
+    private javax.swing.JButton buscarRa;
+    private javax.swing.JButton cargarR;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
