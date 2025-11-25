@@ -53,7 +53,7 @@ public class Bienvenido extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void iniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarActionPerformed
-        Menu menu = new Menu();
+        ElegirCarga elegirC = new ElegirCarga();
         this.dispose();
     }//GEN-LAST:event_iniciarActionPerformed
 

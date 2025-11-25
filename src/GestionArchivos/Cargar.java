@@ -7,6 +7,10 @@ package GestionArchivos;
 import EDD.HashTable;
 import MainClass.Resumen;
 import MainClass.SistemaInvestigaciones;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import javax.swing.JOptionPane;
 
 public class Cargar {
@@ -36,9 +40,9 @@ public class Cargar {
     }
 
     /**
-     * Método principal para cargar un resumen desde el String txt.
-     * Usa SistemaInvestigaciones para insertar en la HashTable
-     * y actualizar los árboles AVL (autores y palabras clave).
+     * Método principal para cargar un resumen desde el String txt. Usa
+     * SistemaInvestigaciones para insertar en la HashTable y actualizar los
+     * árboles AVL (autores y palabras clave).
      */
     public void cargarResumen() {
         try {
@@ -201,6 +205,76 @@ public class Cargar {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,
                     "Error inesperado al cargar el resumen: " + e.getMessage());
+        }
+    }
+
+    public void cargarDesdeArchivo(String nombreArchivo) {
+        try {
+            File file = new File("src/test/" + nombreArchivo);
+
+            if (!file.exists()) {
+                JOptionPane.showMessageDialog(null,
+                        "No se encontró el archivo: " + file.getAbsolutePath());
+                return;
+            }
+
+            // Leer todo
+            StringBuilder sb = new StringBuilder();
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                sb.append(linea).append("\n");
+            }
+            br.close();
+
+            String contenido = sb.toString().trim();
+            if (contenido.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Archivo vacío.");
+                return;
+            }
+
+            // Separar por DOS O MÁS líneas en blanco
+            String[] bloquesRaw = contenido.split("\\n{2,}");
+
+            int procesados = 0;
+            StringBuilder bloqueActual = new StringBuilder();
+
+            for (String pieza : bloquesRaw) {
+                pieza = pieza.trim();
+                if (pieza.isEmpty()) {
+                    continue;
+                }
+
+                // Detectar si una pieza es un TÍTULO (no empieza con Autores, Resumen, Palabras)
+                if (!pieza.toLowerCase().startsWith("autores")
+                        && !pieza.toLowerCase().startsWith("resumen")
+                        && !pieza.toLowerCase().startsWith("palabras claves")) {
+
+                    // Si ya había un bloque previo, procesarlo
+                    if (bloqueActual.length() > 0) {
+                        this.txt = bloqueActual.toString().trim();
+                        this.cargarResumen();
+                        procesados++;
+                        bloqueActual = new StringBuilder();
+                    }
+                }
+
+                bloqueActual.append(pieza).append("\n");
+            }
+
+            // Procesar el último bloque
+            if (bloqueActual.length() > 0) {
+                this.txt = bloqueActual.toString().trim();
+                this.cargarResumen();
+                procesados++;
+            }
+
+            JOptionPane.showMessageDialog(null,
+                    "Carga completada.\nResúmenes procesados: " + procesados);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,
+                    "Error: " + e.getMessage());
         }
     }
 

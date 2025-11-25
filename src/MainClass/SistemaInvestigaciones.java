@@ -480,4 +480,45 @@ public class SistemaInvestigaciones {
         return false;
     }
 
+    /**
+     * Devuelve un reporte de: - Palabra clave - En qué artículos aparece -
+     * Frecuencia en cada artículo
+     * @param palabraClave
+     * @return 
+     */
+    public String detallesPalabraClave(String palabraClave) {
+
+        // 1) Buscar la lista de títulos asociados a la PC
+        Lista titulos = buscarInvestigacionesPorPalabraClave(palabraClave);
+
+        if (titulos.isEmpty()) {
+            return "La palabra clave '" + palabraClave + "' no aparece en ningún artículo.";
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Detalles para la palabra clave: ").append(palabraClave).append("\n\n");
+
+        Nodo aux = titulos.getpFirst();
+
+        // 2) Recorrer cada título donde aparece la palabra clave
+        while (aux != null) {
+            String titulo = (String) aux.getDato();
+
+            // Obtener el resumen completo
+            Resumen r = tablaResumenes.buscar(titulo);
+
+            if (r != null) {
+                int freq = contarFrecuenciaPalabra(r.getCuerpo(), palabraClave);
+
+                sb.append("- ").append(titulo)
+                        .append("-> Frecuencia: ").append(freq).append("\n");
+            }
+
+            aux = aux.getPnext();
+        }
+
+        return sb.toString();
+    }
+
 }

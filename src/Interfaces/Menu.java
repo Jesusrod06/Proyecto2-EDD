@@ -4,6 +4,9 @@
  */
 package Interfaces;
 
+import GestionArchivos.GuardarResumenes;
+import static Interfaces.Bienvenido.sistemaInv;
+
 
 public class Menu extends javax.swing.JFrame {
 
@@ -32,6 +35,8 @@ public class Menu extends javax.swing.JFrame {
         analizarR = new javax.swing.JButton();
         buscarR = new javax.swing.JButton();
         buscarRa = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -74,6 +79,22 @@ public class Menu extends javax.swing.JFrame {
         });
         jPanel1.add(buscarRa, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 130, 160, -1));
 
+        jButton1.setText("Listar Palabras Clave");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 350, -1));
+
+        jButton2.setText("X");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 0, 40, 30));
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
 
         pack();
@@ -98,6 +119,17 @@ public class Menu extends javax.swing.JFrame {
         BuscarAutor buscarAutor = new BuscarAutor();
         this.dispose();
     }//GEN-LAST:event_buscarRaActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        ListarPalabras listarP = new ListarPalabras();
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        GuardarResumenes guardar = new GuardarResumenes(sistemaInv);
+        guardar.guardarEnTest("resumenes");
+        System.exit(0);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -139,6 +171,8 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JButton buscarR;
     private javax.swing.JButton buscarRa;
     private javax.swing.JButton cargarR;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables

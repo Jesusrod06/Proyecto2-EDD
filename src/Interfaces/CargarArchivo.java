@@ -6,6 +6,7 @@ package Interfaces;
 
 import GestionArchivos.Cargar;
 import GestionArchivos.FileChooser;
+import GestionArchivos.GuardarResumenes;
 import static Interfaces.Bienvenido.sistemaInv;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -124,6 +125,8 @@ public class CargarArchivo extends javax.swing.JFrame {
     }//GEN-LAST:event_buscarActionPerformed
 
     private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
+        GuardarResumenes guardar = new GuardarResumenes(sistemaInv);
+        guardar.guardarEnTest("resumenes");
         System.exit(0);
     }//GEN-LAST:event_exitActionPerformed
 
