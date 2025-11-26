@@ -1,10 +1,12 @@
+EDD - FERNANDO TORRE MORA
+PROYECTO 2
 SuperMetroMendeley — Sistema de Gestión de Resúmenes Científicos
 
 Este proyecto implementa un sistema para administrar resúmenes de investigaciones científicas.
 Permite cargarlos desde archivos de texto, analizarlos, buscar por autores o palabras clave, y mantenerlos guardados de una sesión a otra.
 Toda la aplicación utiliza estructuras de datos creadas manualmente: **HashTable**, **Árboles AVL** y **Listas simplemente enlazadas**, integradas dentro de una interfaz gráfica en Java Swing.
 
-IMPORTANTE: PARA CORRER EL PROGRAMA USAR EL JDK. 
+IMPORTANTE: PARA CORRER EL PROGRAMA USAR EL JDK. ESTAR PENDIENTE POR SI NO CORRE EL PROGRAMA.
 
 Integrantes del equipo:
 
