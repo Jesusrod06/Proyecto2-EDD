@@ -1,31 +1,30 @@
-# 📝 SuperMetroMendeley — Sistema de Gestión de Resúmenes Científicos
+SuperMetroMendeley — Sistema de Gestión de Resúmenes Científicos
 
 Este proyecto implementa un sistema para administrar resúmenes de investigaciones científicas.
 Permite cargarlos desde archivos de texto, analizarlos, buscar por autores o palabras clave, y mantenerlos guardados de una sesión a otra.
 Toda la aplicación utiliza estructuras de datos creadas manualmente: **HashTable**, **Árboles AVL** y **Listas simplemente enlazadas**, integradas dentro de una interfaz gráfica en Java Swing.
 
----
-👥 Integrantes del equipo
+IMPORTANTE: PARA CORRER EL PROGRAMA USAR EL JDK. 
 
-Jesus Rodrigues y Jesus Leal
+Integrantes del equipo:
 
-## 📌 Descripción general
+Jesus Rodriguez y Jesus Leal
+
+Descripción general
 
 El sistema está diseñado para recibir múltiples resúmenes en un formato estándar, procesarlos y almacenarlos eficientemente.
 La HashTable funciona como repositorio principal, mientras que dos árboles AVL permiten búsquedas ordenadas tanto por autores como por palabras clave.
 
 El programa también permite guardar todos los resúmenes en un archivo de texto para cargarlos más adelante.
 
----
+Flujo del Programa
 
-# 🚀 Flujo del Programa
-
-## 1️⃣ Pantalla de Inicio (`Bienvenido`)
+1️⃣ Pantalla de Inicio (`Bienvenido`)
 
 Al iniciar, aparece una ventana con un botón *Iniciar*.
 Aquí se crea una única instancia de `SistemaInvestigaciones`, que luego es usada por el resto del programa.
 
-## 2️⃣ Elegir Método de Carga (`ElegirCarga`)
+2️⃣ Elegir Método de Carga (`ElegirCarga`)
 
 El usuario escoge entre:
 
@@ -39,7 +38,7 @@ Desde aquí se pasa al menú principal.
 
 ---
 
-# 🧠 Estructura Interna del Sistema
+🧠 Estructura Interna del Sistema
 
 Todo el funcionamiento está gestionado por la clase:
 
@@ -178,8 +177,6 @@ El sistema utiliza varias ventanas para permitir al usuario navegar fácilmente 
 | **ListarPalabras**     | Mostrar palabras clave ordenadas |
 
 Cada ventana es sencilla y directa, con validaciones para evitar errores comunes del usuario.
-
----
 
 # ✔️ Conclusión
 
